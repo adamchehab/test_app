@@ -1,52 +1,56 @@
 import { useState } from "react";
-import { sculptureList } from "./data.js";
+import { fruitsList } from "./data.js";
 
-export default function Gallery() {
-	const [index, setIndex] = useState(0);
-	const [showMore, setShowMore] = useState(false);
+// function SearchBar() {
+// 	return (
+// 		<label>
+// 			Fruit:
+// 			<input onChange={null} style={{ marginLeft: "20px" }} />
+// 		</label>
+// 	);
+// }
 
-	let hasPrev = index > 0;
-	let hasNext = index < sculptureList.length - 1;
+// function ItemsList() {
+// 	return (
+// 		<ul>
+// 			{fruitsList.map((item) => (
+// 				<li key={item.id}>{item.name}</li>
+// 			))}
+// 		</ul>
+// 	);
+// }
 
-	function handleNextClick() {
-		if (hasNext) {
-			setIndex(index + 1);
-		} else {
-			setIndex(0);
-		}
-	}
+function SearchItemsList() {
+	// const [searchItem, setSearchItem] = useState('');
 
-	function handlePrevClick() {
-		if (hasPrev) {
-			setIndex(index - 1);
-		} else {
-			setIndex(sculptureList.length - 1);
-		}
-	}
+	let value = "Apple";
 
-	function handleMoreClick() {
-		setShowMore(!showMore);
-	}
+	const filteredFrutList = fruitsList.filter((item) =>
+		item.name.toLowerCase().includes(value.toLowerCase())
+	);
 
-	let sculpture = sculptureList[index];
 	return (
 		<>
-			{/* {index < sculptureList.length - 1 ? <button onClick={handleNextClick}>Next</button> : null} */}
-			{/* {index < sculptureList.length - 1 ? <button onClick={handleNextClick}>Next</button> : setIndex(0)} */}
-			<button onClick={handlePrevClick}>Prev</button>
-			<button onClick={handleNextClick}>Next</button>
-			<h2>
-				<i>{sculpture.name} </i>
-				by {sculpture.artist}
-			</h2>
-			<h3>
-				({index + 1} of {sculptureList.length})
-			</h3>
-			<button onClick={handleMoreClick}>
-				{showMore ? "Hide" : "Show"} details
-			</button>
-			{showMore && <p>{sculpture.description}</p>}
-			<img src={sculpture.url} alt={sculpture.alt} />
+			<label>
+				Fruit:
+				<input onChange={null} style={{ marginLeft: "20px" }} />
+			</label>
+			<ul>
+				{filteredFrutList.map((item) => (
+					<li key={item.id}>{item.name}</li>
+				))}
+			</ul>
+		</>
+	);
+}
+
+export default function Gallery() {
+	return (
+		<>
+			<div style={{ marginLeft: "800px", marginTop: "100px" }}>
+				{/* <SearchBar /> */}
+				<SearchItemsList />
+			</div>
 		</>
 	);
 }
