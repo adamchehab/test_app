@@ -1,43 +1,52 @@
-import { Profile, Avatar } from "./utils.js";
+import { useState } from "react";
+import { sculptureList } from "./data.js";
 
 export default function Gallery() {
+	const [index, setIndex] = useState(0);
+	const [showMore, setShowMore] = useState(false);
+
+	let hasPrev = index > 0;
+	let hasNext = index < sculptureList.length - 1;
+
+	function handleNextClick() {
+		if (hasNext) {
+			setIndex(index + 1);
+		} else {
+			setIndex(0);
+		}
+	}
+
+	function handlePrevClick() {
+		if (hasPrev) {
+			setIndex(index - 1);
+		} else {
+			setIndex(sculptureList.length - 1);
+		}
+	}
+
+	function handleMoreClick() {
+		setShowMore(!showMore);
+	}
+
+	let sculpture = sculptureList[index];
 	return (
-		<div>
-			<h1>Notable Scientists</h1>
-			<Profile
-				name="Maria Skłodowska-Curie"
-				profession="physicist and chemist"
-				awards={[
-					"Nobel Prize in Physics",
-					"Nobel Prize in Chemistry",
-					"Davy Medal",
-					"Matteucci Medal",
-				]}
-				discovered="polonium (element)"
-			>
-				<Avatar
-					person={{
-						name: "Maria Skłodowska-Curie",
-						imgUrl: "szV5sdG",
-					}}
-				/>
-			</Profile>
-			<Profile
-				name="Katsuko Saruhashi"
-				profession="geochemist"
-				awards={[
-					"Miyake Prize for geochemistry",
-					"Tanaka Prize",
-				]}
-				discovered="a method for measuring carbon dioxide in seawater"
-			>
-				<Avatar
-					person={{
-						name: "Katsuko Saruhashi",
-						imgUrl: "YfeOqp2",
-					}}
-				/>
-			</Profile>
-		</div>
+		<>
+			{/* {index < sculptureList.length - 1 ? <button onClick={handleNextClick}>Next</button> : null} */}
+			{/* {index < sculptureList.length - 1 ? <button onClick={handleNextClick}>Next</button> : setIndex(0)} */}
+			<button onClick={handlePrevClick}>Prev</button>
+			<button onClick={handleNextClick}>Next</button>
+			<h2>
+				<i>{sculpture.name} </i>
+				by {sculpture.artist}
+			</h2>
+			<h3>
+				({index + 1} of {sculptureList.length})
+			</h3>
+			<button onClick={handleMoreClick}>
+				{showMore ? "Hide" : "Show"} details
+			</button>
+			{showMore && <p>{sculpture.description}</p>}
+			<img src={sculpture.url} alt={sculpture.alt} />
+		</>
 	);
 }
