@@ -21,21 +21,28 @@ import { fruitsList } from "./data.js";
 // }
 
 function SearchItemsList() {
-	// const [searchItem, setSearchItem] = useState('');
-
-	let value = "Apple";
+	const [searchItem, setSearchItem] = useState("");
 
 	const filteredFrutList = fruitsList.filter((item) =>
-		item.name.toLowerCase().includes(value.toLowerCase())
+		item.name.toLowerCase().includes(searchItem.toLowerCase())
 	);
+
+	function handleSearchItem(e) {
+		setSearchItem(e.target.value);
+	}
 
 	return (
 		<>
 			<label>
 				Fruit:
-				<input onChange={null} style={{ marginLeft: "20px" }} />
+				<input
+					placeholder="fruit name"
+					value={searchItem}
+					onChange={handleSearchItem}
+					style={{ marginLeft: "20px" }}
+				/>
 			</label>
-			<ul>
+			<ul style={{ marginLeft: "34px" }}>
 				{filteredFrutList.map((item) => (
 					<li key={item.id}>{item.name}</li>
 				))}
@@ -44,7 +51,7 @@ function SearchItemsList() {
 	);
 }
 
-export default function Gallery() {
+export default function SearchFruits() {
 	return (
 		<>
 			<div style={{ marginLeft: "800px", marginTop: "100px" }}>
