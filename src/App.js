@@ -1,63 +1,70 @@
-import { useState } from "react";
-import { fruitsList } from "./data.js";
-import "./App.css";
+import { useState } from 'react';
 
-function SearchBar({ title, placeholder, value, handler, style }) {
-	return (
-		<label>
-			{title}
-			<input
-				placeholder={placeholder}
-				value={value}
-				onChange={handler}
-				style={style}
-			/>
-		</label>
-	);
-}
+const initialProducts = [{
+  id: 0,
+  name: 'Baklava',
+  count: 1,
+}, {
+  id: 1,
+  name: 'Cheese',
+  count: 5,
+}, {
+  id: 2,
+  name: 'Spaghetti',
+  count: 2,
+}];
 
-function ItemsList({ list }) {
-	return (
-		<ul>
-			{list.map((item) => (
-				<li key={item.id}>
-					{/* <input type="checkbox" /> */}
-					{item.name}
-				</li>
-			))}
-		</ul>
-	);
-}
+export default function ShoppingCart() {
+  const [
+    products,
+    setProducts
+  ] = useState(initialProducts)
 
-function SearchItemsList() {
-	const [searchItem, setSearchItem] = useState("");
+  function handleIncreaseClick(productId) {
+    setProducts(products.map(product => {
+      if (product.id === productId) {
+        return {
+          ...product,
+          count: product.count + 1
+        };
+      } else {
+        return product;
+      }
+    }))
+  }
 
-	const filteredFrutList = fruitsList.filter((item) =>
-		item.name.toLowerCase().includes(searchItem.toLowerCase())
-	);
+  function handleIncreaseClick(productId) {
+  setProducts(products.map(product => {
+      if (product.id === productId) {
+        return {
+          ...product,
+          count: product.count + 1
+        };
+      } else {
+        return product;
+      }
+    }))
+  }
 
-	function handleSearchItem(e) {
-		setSearchItem(e.target.value);
-	}
-
-	return (
-		<div className="searchPanel">
-			<SearchBar
-				title="Fruits:"
-				placeholder="fruit name"
-				value={searchItem}
-				handler={handleSearchItem}
-				style={{ marginLeft: "20px" }}
-			/>
-			<ItemsList list={filteredFrutList} />
-		</div>
-	);
-}
-
-export default function Page() {
-	return (
-		<>
-			<SearchItemsList />
-		</>
-	);
+  return (
+    <ul>
+      {products.map(product => (
+        <li key={product.id}>
+          {product.name}
+          {' '}
+          (<b>{product.count}</b>)
+          <button onClick={() => {
+            handleIncreaseClick(product.id);
+          }}>
+            +
+          </button>
+          <button onClick={() => {
+            handleIncreaseClick(product.id);
+          }}>
+            –
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
 }
