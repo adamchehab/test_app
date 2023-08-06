@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fruitsList } from "./data.js";
+import "./App.css";
 
 function SearchBar({ title, placeholder, value, handler, style }) {
 	return (
@@ -17,9 +18,12 @@ function SearchBar({ title, placeholder, value, handler, style }) {
 
 function ItemsList({ list }) {
 	return (
-		<ul style={{ marginLeft: "34px" }}>
+		<ul>
 			{list.map((item) => (
-				<li key={item.id}>{item.name}</li>
+				<li key={item.id}>
+					{/* <input type="checkbox" /> */}
+					{item.name}
+				</li>
 			))}
 		</ul>
 	);
@@ -37,7 +41,7 @@ function SearchItemsList() {
 	}
 
 	return (
-		<>
+		<div className="searchPanel">
 			<SearchBar
 				title="Fruits:"
 				placeholder="fruit name"
@@ -46,16 +50,14 @@ function SearchItemsList() {
 				style={{ marginLeft: "20px" }}
 			/>
 			<ItemsList list={filteredFrutList} />
-		</>
+		</div>
 	);
 }
 
-export default function SearchFruits() {
+export default function Page() {
 	return (
 		<>
-			<div style={{ marginLeft: "800px", marginTop: "100px" }}>
-				<SearchItemsList />
-			</div>
+			<SearchItemsList />
 		</>
 	);
 }
