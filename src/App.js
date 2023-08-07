@@ -1,50 +1,63 @@
 import { useState } from "react";
+import { fruitsList } from "./data.js";
+import "./App.css";
 
-export default function EditProfile() {
-	const [editMode, setEditMode] = useState(false);
-	const [firstName, setFirstName] = useState("Adam");
-	const [lastName, setLastName] = useState("Shehab");
+function SearchBar({ title, placeholder, value, handler, style }) {
+	return (
+		<label>
+			{title}
+			<input
+				placeholder={placeholder}
+				value={value}
+				onChange={handler}
+				style={style}
+			/>
+		</label>
+	);
+}
 
-	function handleEditToggle(e) {
-		e.preventDefault();
-		setEditMode(!editMode);
-	}
+function ItemsList({ list }) {
+	return (
+		<ul>
+			{list.map((item) => (
+				<li key={item.id}>
+					{/* <input type="checkbox" /> */}
+					{item.name}
+				</li>
+			))}
+		</ul>
+	);
+}
 
-	function handleFirstNameChange(e) {
-		setFirstName(e.target.value);
-	}
+function SearchItemsList() {
+	const [searchItem, setSearchItem] = useState("");
 
-	function handleLastNameChange(e) {
-		setLastName(e.target.value);
+	const filteredFrutList = fruitsList.filter((item) =>
+		item.name.toLowerCase().includes(searchItem.toLowerCase())
+	);
+
+	function handleSearchItem(e) {
+		setSearchItem(e.target.value);
 	}
 
 	return (
-		<form style={{ marginLeft: "500px" }}>
-			<label style={{ display: "block" }}>
-				First name:{" "}
-				{editMode ? (
-					<input value={firstName} onChange={handleFirstNameChange} />
-				) : (
-					<b>{firstName}</b>
-				)}
-			</label>
+		<div className="searchPanel">
+			<SearchBar
+				title="Fruits:"
+				placeholder="fruit name"
+				value={searchItem}
+				handler={handleSearchItem}
+				style={{ marginLeft: "20px" }}
+			/>
+			<ItemsList list={filteredFrutList} />
+		</div>
+	);
+}
 
-			<label style={{ display: "block" }}>
-				Last name:{" "}
-				{editMode ? (
-					<input value={lastName} onChange={handleLastNameChange} />
-				) : (
-					<b>{lastName}</b>
-				)}
-			</label>
-
-			<button type="submit" onClick={handleEditToggle}>
-				{editMode ? "Save changes" : "Edit Profile"}
-			</button>
-
-			<p>
-				Hello, {firstName} {lastName}!
-			</p>
-		</form>
+export default function Page() {
+	return (
+		<>
+			<SearchItemsList />
+		</>
 	);
 }
