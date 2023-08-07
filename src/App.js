@@ -1,70 +1,50 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-const initialProducts = [{
-  id: 0,
-  name: 'Baklava',
-  count: 1,
-}, {
-  id: 1,
-  name: 'Cheese',
-  count: 5,
-}, {
-  id: 2,
-  name: 'Spaghetti',
-  count: 2,
-}];
+export default function EditProfile() {
+	const [editMode, setEditMode] = useState(false);
+	const [firstName, setFirstName] = useState("Adam");
+	const [lastName, setLastName] = useState("Shehab");
 
-export default function ShoppingCart() {
-  const [
-    products,
-    setProducts
-  ] = useState(initialProducts)
+	function handleEditToggle(e) {
+		e.preventDefault();
+		setEditMode(!editMode);
+	}
 
-  function handleIncreaseClick(productId) {
-    setProducts(products.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          count: product.count + 1
-        };
-      } else {
-        return product;
-      }
-    }))
-  }
+	function handleFirstNameChange(e) {
+		setFirstName(e.target.value);
+	}
 
-  function handleIncreaseClick(productId) {
-  setProducts(products.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          count: product.count + 1
-        };
-      } else {
-        return product;
-      }
-    }))
-  }
+	function handleLastNameChange(e) {
+		setLastName(e.target.value);
+	}
 
-  return (
-    <ul>
-      {products.map(product => (
-        <li key={product.id}>
-          {product.name}
-          {' '}
-          (<b>{product.count}</b>)
-          <button onClick={() => {
-            handleIncreaseClick(product.id);
-          }}>
-            +
-          </button>
-          <button onClick={() => {
-            handleIncreaseClick(product.id);
-          }}>
-            –
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
+	return (
+		<form style={{ marginLeft: "500px" }}>
+			<label style={{ display: "block" }}>
+				First name:{" "}
+				{editMode ? (
+					<input value={firstName} onChange={handleFirstNameChange} />
+				) : (
+					<b>{firstName}</b>
+				)}
+			</label>
+
+			<label style={{ display: "block" }}>
+				Last name:{" "}
+				{editMode ? (
+					<input value={lastName} onChange={handleLastNameChange} />
+				) : (
+					<b>{lastName}</b>
+				)}
+			</label>
+
+			<button type="submit" onClick={handleEditToggle}>
+				{editMode ? "Save changes" : "Edit Profile"}
+			</button>
+
+			<p>
+				Hello, {firstName} {lastName}!
+			</p>
+		</form>
+	);
 }
