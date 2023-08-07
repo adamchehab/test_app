@@ -1,50 +1,61 @@
 import { useState } from "react";
+import AddItem from './AddItem.js';
+import PackingList from './PackingList.js';
 
-export default function EditProfile() {
-	const [editMode, setEditMode] = useState(false);
-	const [firstName, setFirstName] = useState("Adam");
-	const [lastName, setLastName] = useState("Shehab");
+const initialItems = [
+	{ id: 0, title: "Warm socks", packed: true },
+	{ id: 1, title: "Travel journal", packed: false },
+	{ id: 2, title: "Watercolors", packed: false },
+	{ id: 3, title: "Test item", packed: false },
+];
+let nextId = initialItems.length;
 
-	function handleEditToggle(e) {
-		e.preventDefault();
-		setEditMode(!editMode);
+export default function TravelPlan() {
+	const [items, setItems] = useState(initialItems);
+	const [total, setTotal] = useState(initialItems.length);
+
+	function handleAddItem(title) {
+		setTotal(total + 1);
+		setItems([
+			...items,
+			{
+				id: nextId++,
+				title: title,
+				packed: false,
+			},
+		]);
 	}
 
-	function handleFirstNameChange(e) {
-		setFirstName(e.target.value);
+	function handleChangeItem(nextItem) {
+		setItems(
+			items.map((item) => {
+				if (item.id === nextItem.id) {
+					return nextItem;
+				} else {
+					return item;
+				}
+			})
+		);
 	}
 
-	function handleLastNameChange(e) {
-		setLastName(e.target.value);
+	function handleDeleteItem(itemId) {
+		setTotal(total - 1);
+		setItems(items.filter((item) => item.id !== itemId));
 	}
 
 	return (
-		<form style={{ marginLeft: "500px" }}>
-			<label style={{ display: "block" }}>
-				First name:{" "}
-				{editMode ? (
-					<input value={firstName} onChange={handleFirstNameChange} />
-				) : (
-					<b>{firstName}</b>
-				)}
-			</label>
-
-			<label style={{ display: "block" }}>
-				Last name:{" "}
-				{editMode ? (
-					<input value={lastName} onChange={handleLastNameChange} />
-				) : (
-					<b>{lastName}</b>
-				)}
-			</label>
-
-			<button type="submit" onClick={handleEditToggle}>
-				{editMode ? "Save changes" : "Edit Profile"}
-			</button>
-
-			<p>
-				Hello, {firstName} {lastName}!
-			</p>
-		</form>
+		<>
+			<AddItem onAddItem={handleAddItem} />
+			<PackingList
+				items={items}
+				onChangeItem={handleChangeItem}
+				onDeleteItem={handleDeleteItem}
+			/>
+			<hr />
+			<b>
+				{items.reduce((packedItemsCount, current) => (current.packed ? packedItemsCount + 1 : packedItemsCount + 0),0)}
+              {" "} out of {total} packed!
+			</b>
+		</>
 	);
 }
