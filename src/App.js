@@ -1,6 +1,6 @@
 import { useState } from "react";
-import AddItem from './AddItem.js';
-import PackingList from './PackingList.js';
+import AddItem from "./AddItem.js";
+import PackingList from "./PackingList.js";
 
 const initialItems = [
 	{ id: 0, title: "Warm socks", packed: true },
@@ -53,8 +53,14 @@ export default function TravelPlan() {
 			/>
 			<hr />
 			<b>
-				{items.reduce((packedItemsCount, current) => (current.packed ? packedItemsCount + 1 : packedItemsCount + 0),0)}
-              {" "} out of {total} packed!
+				{items.reduce(
+					(packedItemsCount, current) =>
+						current.packed
+							? packedItemsCount + 1
+							: packedItemsCount + 0,
+					0
+				)}{" "}
+				out of {total} packed!
 			</b>
 		</>
 	);
